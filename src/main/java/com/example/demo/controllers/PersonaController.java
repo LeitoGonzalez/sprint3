@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import com.example.demo.entities.Persona;
 import com.example.demo.services.PersonaService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +36,8 @@ public class PersonaController {
         }
     }
 
-    public ResponseEntity<?> save(Persona entity){
+    @PostMapping("")
+    public ResponseEntity<?> save(@RequestBody Persona entity){
         try {
             return ResponseEntity.status(HttpStatus.OK).body(personaService.save(entity));
         }catch (Exception e){
@@ -43,5 +45,21 @@ public class PersonaController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Persona entity){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(personaService.update(id, entity));
+        }catch (Exception e){
+            return ResponseEntity.status((HttpStatus.BAD_REQUEST)).body("{\"error\":\"Error, por favor intente mas tarde.\"}");
+        }
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+        try {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(personaService.delete(id));
+        }catch (Exception e){
+            return ResponseEntity.status((HttpStatus.BAD_REQUEST)).body("{\"error\":\"Error, por favor intente mas tarde.\"}");
+        }
+    }
 }
